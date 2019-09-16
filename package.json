@@ -7,7 +7,7 @@
   "scripts": {
     "start": "mdx-deck deck.js",
     "build": "mdx-deck build deck.js",
-    "test": "echo \"there are no tests\""
+    "now-build": "yarn build"
   },
   "devDependencies": {
     "code-surfer": "^2.0.0-alpha.10",
