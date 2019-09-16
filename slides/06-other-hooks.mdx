@@ -1,0 +1,213 @@
+import { CodeSurferLayout } from 'code-surfer'
+
+# Other Hooks 👨‍👩‍👧‍👦
+
+[useReducer](https://reactjs.org/docs/hooks-reference.html#usereducer),
+[useCallback](https://reactjs.org/docs/hooks-reference.html#usecallback),
+[useMemo](https://reactjs.org/docs/hooks-reference.html#usememo),
+[useRef](https://reactjs.org/docs/hooks-reference.html#useref),
+[useImperativeHandle](https://reactjs.org/docs/hooks-reference.html#useimperativehandle),
+[useLayoutEffect](https://reactjs.org/docs/hooks-reference.html#uselayouteffect),
+[useDebugValue](https://reactjs.org/docs/hooks-reference.html#usedebugvalue)
+
+---
+
+# [Reducer Hook](https://reactjs.org/docs/hooks-reference.html#usereducer) 🎣
+
+Use Redux-like reducers in **function components** <br />
+with React.useReducer
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+const initialState = { count: 0 }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  )
+}
+```
+
+```jsx 1 subtitle='Reducer initial state'
+const initialState = { count: 0 }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  )
+}
+```
+
+```jsx 3:12 subtitle='Reducer logic (think of Redux)'
+const initialState = { count: 0 }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  )
+}
+```
+
+```jsx 14:22 subtitle='Counter component with {useReducer} Hook'
+const initialState = { count: 0 }
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+# [Ref Hook](https://reactjs.org/docs/hooks-reference.html#useref) 🎣
+
+Create and use refs in **function components** <br />
+with React.useRef
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useRef } from 'react'
+
+function Example() {
+  const leftRef = useRef()
+  const rightRef = useRef()
+
+  function focus(ref) {
+    ref.current.focus()
+  }
+
+  return (
+    <>
+      <button ref={leftRef} onClick={() => focus(rightRef)}>
+        Focus Right Button
+      </button>
+      <button ref={rightRef} onClick={() => focus(leftRef)}>
+        Focus Left Button
+      </button>
+    </>
+  )
+}
+```
+
+```jsx 1[17:22],4:5 subtitle='Create refs using {useRef} instead of {createRef} which recreates the ref on every update'
+import React, { useRef } from 'react'
+
+function Example() {
+  const leftRef = useRef()
+  const rightRef = useRef()
+
+  function focus(ref) {
+    ref.current.focus()
+  }
+
+  return (
+    <>
+      <button ref={leftRef} onClick={() => focus(rightRef)}>
+        Focus Right Button
+      </button>
+      <button ref={rightRef} onClick={() => focus(leftRef)}>
+        Focus Left Button
+      </button>
+    </>
+  )
+}
+```
+
+```jsx 13,16 subtitle='Attach refs like usual'
+import React, { useRef } from 'react'
+
+function Example() {
+  const leftRef = useRef()
+  const rightRef = useRef()
+
+  function focus(ref) {
+    ref.current.focus()
+  }
+
+  return (
+    <>
+      <button ref={leftRef} onClick={() => focus(rightRef)}>
+        Focus Right Button
+      </button>
+      <button ref={rightRef} onClick={() => focus(leftRef)}>
+        Focus Left Button
+      </button>
+    </>
+  )
+}
+```
+
+</CodeSurferLayout>

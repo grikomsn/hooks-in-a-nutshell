@@ -1,0 +1,254 @@
+import { Appear, Notes } from 'mdx-deck'
+import { CodeSurferLayout } from 'code-surfer'
+
+# [Custom Hooks](https://reactjs.org/docs/hooks-custom.html) 💡
+
+Build your own hooks by extracting logics <br />
+into reusable functions
+
+---
+
+# Rules of Custom Hooks 💁
+
+<ul>
+  <Appear>
+    <li>
+      Custom Hook is a JavaScript function whose name <br /> starts with "use"
+      (e.g. useSomething)
+    </li>
+    <li>Custom Hook may call other built-in or custom Hooks</li>
+    <li>
+      Follows the{' '}
+      <a href='https://reactjs.org/docs/hooks-rules.html'>rules of Hooks</a>
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+# Example Case ⚡️
+
+<ul>
+  <Appear>
+    <li>Retrieve online status from a "friend"</li>
+    <li>Use our previously made friend status snippet</li>
+    <li>
+      Reuse same logic by extracting side effect <br />
+      into a custom Hook
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  })
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx 3,17:20
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  })
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function FriendListItem(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  })
+
+  return (
+    <li style={{ color: isOnline ? 'green' : 'black' }}>{props.friend.name}</li>
+  )
+}
+```
+
+```jsx 4:15
+import React, { useState, useEffect } from 'react'
+
+function FriendListItem(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  })
+
+  return (
+    <li style={{ color: isOnline ? 'green' : 'black' }}>{props.friend.name}</li>
+  )
+}
+```
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange)
+    }
+  })
+
+  return isOnline
+}
+```
+
+```jsx 1:18
+import React, { useState, useEffect } from 'react'
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange)
+    }
+  })
+
+  return isOnline
+}
+```
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange)
+    }
+  })
+
+  return isOnline
+}
+
+function FriendStatus(props) {
+  const isOnline = useFriendStatus(props.friend.id)
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline)
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange)
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange)
+    }
+  })
+
+  return isOnline
+}
+
+function FriendStatus(props) {
+  const isOnline = useFriendStatus(props.friend.id)
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+
+function FriendListItem(props) {
+  const isOnline = useFriendStatus(props.friend.id)
+
+  return (
+    <li style={{ color: isOnline ? 'green' : 'black' }}>{props.friend.name}</li>
+  )
+}
+```
+
+</CodeSurferLayout>

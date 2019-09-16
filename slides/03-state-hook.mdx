@@ -1,0 +1,965 @@
+import { Appear, Notes } from 'mdx-deck'
+import { CodeSurferLayout } from 'code-surfer'
+
+# [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html) ✌️
+
+<ul>
+  <Appear>
+    <li>
+      Only call Hooks <b>at the top level</b>
+    </li>
+    <li>
+      Only call Hooks{' '}
+      <b>
+        from React <br /> function components
+      </b>
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{`
+1. Don’t call Hooks inside loops, conditions, or nested functions
+2. Don’t call Hooks from regular JavaScript functions
+`}</Notes>
+
+---
+
+# [Hooks API](https://reactjs.org/docs/hooks-reference.html) 📚
+
+- Basic Hooks <br />
+  ([useState](https://reactjs.org/docs/hooks-reference.html#usestate),
+  [useEffect](https://reactjs.org/docs/hooks-reference.html#useeffect),
+  [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext))
+
+* Additional Hooks <br />
+  ([useReducer](https://reactjs.org/docs/hooks-reference.html#usereducer),
+  [useDebugValue](https://reactjs.org/docs/hooks-reference.html#usedebugvalue),
+  [and more](https://reactjs.org/docs/hooks-reference.html#additional-hooks))
+
+---
+
+# [State Hook](https://reactjs.org/docs/hooks-state.html) 🎣
+
+Use states in **function components** <br />
+with React.useState
+
+<Notes>Emphasize on function components</Notes>
+
+---
+
+###### Based on our previous example snippet...
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+###### ...we are going to convert that into a <br /> function component and use state Hook
+
+---
+
+# Things to do 📝
+
+<ul>
+  <Appear>
+    <li>Transform our class component to function component</li>
+    <li>Change state logic using React.useState</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 1[28:35] subtitle='Import {useState} from React'
+import React, { Component, useState } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle="Create a new function component"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  //
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 14:19 subtitle="And we're going to copy our render content..."
+import React, { Component, useState } from 'react'
+
+function Example() {
+  //
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle="...into our function component"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 13,16,17 subtitle="We are going to convert this into a Hook"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle="This is how to use {useState}"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 4[29:39] subtitle="{useState} parameter accepts the initial state"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 4[10:14] subtitle="This is the state value, equiv. to {this.state.count} without the hassle of using {this.state}"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 4[17:24] subtitle="This is the state setter, equiv. to {this.setState} or our simplified {setCount}"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 4[9:25] subtitle="Array destructuring allows naming state and setter to preferred name"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 1:12
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 4,15,18,19 subtitle="Function component has less footprint and no need for simplifying things..."
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 7:10,22:25 subtitle="...while render outputs stay the same"
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 1[17:25] subtitle='So no need to import {Component}'
+import React, { Component, useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+```
+
+```jsx 1:12
+import React, { useState } from 'react'
+
+function Example() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+```
+
+```jsx 1:17
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+<!-- prettier-ignore-start -->
+
+```jsx 1:12
+  import React, { useState } from 'react'
+
+  function Example() {
+    const [count, setCount] = useState(0)
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+```
+
+<!-- prettier-ignore-end -->
+
+</CodeSurferLayout>
+
+---
+
+import UseState from '../components/examples/UseState.js'
+
+<UseState />
+
+---
+
+# How about multiple useState? 🤔🤔
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useState } from 'react'
+
+function Example() {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+
+  return (
+    <div>
+      <p>You clicked {countA} times</p>
+      <button onClick={() => setCountA(countA + 1)}>Click A</button>
+
+      <p>You clicked {countB} times</p>
+      <button onClick={() => setCountB(countB + 1)}>Click B</button>
+    </div>
+  )
+}
+```
+
+```jsx 4,9,10 subtitle='{useState} for count A'
+import React, { useState } from 'react'
+
+function Example() {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+
+  return (
+    <div>
+      <p>You clicked {countA} times</p>
+      <button onClick={() => setCountA(countA + 1)}>Click A</button>
+
+      <p>You clicked {countB} times</p>
+      <button onClick={() => setCountB(countB + 1)}>Click B</button>
+    </div>
+  )
+}
+```
+
+```jsx 5,12,13 subtitle='{useState} for count B'
+import React, { useState } from 'react'
+
+function Example() {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+
+  return (
+    <div>
+      <p>You clicked {countA} times</p>
+      <button onClick={() => setCountA(countA + 1)}>Click A</button>
+
+      <p>You clicked {countB} times</p>
+      <button onClick={() => setCountB(countB + 1)}>Click B</button>
+    </div>
+  )
+}
+```
+
+```jsx subtitle='Comparison with class components'
+import React, { useState } from 'react'
+
+class Example extends React.Component {
+  state = {
+    countA: 0,
+    countB: 0,
+  }
+
+  setCountA(countA) {
+    this.setState({ countA })
+  }
+
+  setCountB(countB) {
+    this.setState({ countB })
+  }
+
+  ...
+}
+
+function Example() {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+
+  return (
+    <div>
+      <p>You clicked {countA} times</p>
+      <button onClick={() => setCountA(countA + 1)}>Click A</button>
+
+      <p>You clicked {countB} times</p>
+      <button onClick={() => setCountB(countB + 1)}>Click B</button>
+    </div>
+  )
+}
+```
+
+```jsx 1:16
+import React, { useState } from 'react'
+
+function Example() {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+
+  return (
+    <div>
+      <p>You clicked {countA} times</p>
+      <button onClick={() => setCountA(countA + 1)}>Click A</button>
+
+      <p>You clicked {countB} times</p>
+      <button onClick={() => setCountB(countB + 1)}>Click B</button>
+    </div>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseStateMultiple from '../components/examples/UseStateMultiple.js'
+
+<UseStateMultiple />
+
+---
+
+# Or useState in forms? 🤵
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useState } from 'react'
+
+function Example() {
+  const [value, setValue] = useState('world')
+
+  return (
+    <div>
+      <p>Hello, {value}!</p>
+      <input
+        type='text'
+        value={value}
+        onChange={v => setValue(v.target.value)}
+      />
+    </div>
+  )
+}
+```
+
+```jsx 4 subtitle="Default value set to 'world'"
+import React, { useState } from 'react'
+
+function Example() {
+  const [value, setValue] = useState('world')
+
+  return (
+    <div>
+      <p>Hello, {value}!</p>
+      <input
+        type='text'
+        value={value}
+        onChange={v => setValue(v.target.value)}
+      />
+    </div>
+  )
+}
+```
+
+```jsx 9:13 subtitle="Set value and add on change callback"
+import React, { useState } from 'react'
+
+function Example() {
+  const [value, setValue] = useState('world')
+
+  return (
+    <div>
+      <p>Hello, {value}!</p>
+      <input
+        type='text'
+        value={value}
+        onChange={v => setValue(v.target.value)}
+      />
+    </div>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseStateForm from '../components/examples/UseStateForm.js'
+
+<UseStateForm />
+
+⋯
+
+###### This example is a proof-of-concept, <br /> since every key typed changes the value.
+
+---
+
+# What about arrays or objects? 📦
+
+Let's make a simple list with an input form.
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useState } from 'react'
+
+function Example() {
+  //
+}
+```
+
+```jsx subtitle="We'll make a list state containing objects with the text property"
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+}
+```
+
+```jsx subtitle="And an input state for the form"
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+
+  const [value, setValue] = useState('')
+}
+```
+
+```jsx subtitle="Also a function to insert new item list"
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+
+  const [value, setValue] = useState('')
+
+  const addValueToList = () => {
+    if (value.trim().length > 0) {
+      setList([...list, { text: value }])
+      setValue('')
+    }
+  }
+}
+```
+
+```jsx subtitle="Alternatively, use a function with the parameter is the previous value of the state (equiv. to {list})"
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+
+  const [value, setValue] = useState('')
+
+  const addValueToList = () => {
+    if (value.trim().length > 0) {
+      setList(prevList => [...prevList, { text: value }])
+      setValue('')
+    }
+  }
+}
+```
+
+```jsx subtitle="And add the component markups"
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+
+  const [value, setValue] = useState('')
+
+  const addValueToList = () => {
+    if (value.trim().length > 0) {
+      setList(prevList => [...prevList, { text: value }])
+      setValue('')
+    }
+  }
+
+  return (
+    <div>
+      <ul>
+        {list.map(({ text }) => (
+          <li key={text}>{text}</li>
+        ))}
+      </ul>
+
+      <input
+        type='text'
+        value={value}
+        onChange={v => setValue(v.target.value)}
+      />
+
+      <button onClick={addValueToList}>Add</button>
+    </div>
+  )
+}
+```
+
+```jsx 1:36
+import React, { useState } from 'react'
+
+function Example() {
+  const [list, setList] = useState([
+    { text: 'attend meetup' },
+    { text: 'meet new friends' },
+    { text: 'watch memes' },
+  ])
+
+  const [value, setValue] = useState('')
+
+  const addValueToList = () => {
+    if (value.trim().length > 0) {
+      setList(prevList => [...prevList, { text: value }])
+      setValue('')
+    }
+  }
+
+  return (
+    <div>
+      <ul>
+        {list.map(({ text }) => (
+          <li key={text}>{text}</li>
+        ))}
+      </ul>
+
+      <input
+        type='text'
+        value={value}
+        onChange={v => setValue(v.target.value)}
+      />
+
+      <button onClick={addValueToList}>Add</button>
+    </div>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseStateObject from '../components/examples/UseStateObject.js'
+
+<UseStateObject />
+
+---
+
+# Recap on State Hook 🤷
+
+<ul>
+  <Appear>
+    <li>useState accepts any initial state value</li>
+    <li>useState replaces value unlike this.setState</li>
+    <li>useState can be used multiple times</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+###### Still pumped? Let's continue forward.
+
+![gif](https://media.giphy.com/media/EDt1m8p5hqXG8/giphy.gif)

@@ -1,0 +1,246 @@
+import { CodeSurferLayout } from 'code-surfer'
+
+###### ...let's flashback to class components.
+
+![gif](https://media.giphy.com/media/3d6WO0F9SK9hbmpsiX/giphy.gif)
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class Example extends Component {
+  constructor() {
+    super()
+    this.state = { count: 0 }
+  }
+
+  render() {
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 6 subtitle='{count} state initialization in constructor'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  constructor() {
+    super()
+    this.state = { count: 0 }
+  }
+
+  render() {
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle="Declare outside constructor with 'babel-plugin-proposal-class-properties'"
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 9:12 subtitle='Render {count} and set increment on click'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle='You can destructure {count} state'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 11:12 subtitle='So these parts...'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle='...can use the desctructured {count} state'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => this.setState({ count: count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle='Or even simplify {setState} function'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => this.setState({ count: count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 13 subtitle='So this can be refactored...'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => this.setState({ count: count + 1 })}>
+          Click me
+        </button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx subtitle='...into this'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+```jsx 1:17
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { count: 0 }
+
+  render() {
+    const { count } = this.state
+    const setCount = count => this.setState({ count })
+
+    return (
+      <div>
+        <p>You clicked {count} times</p>
+        <button onClick={() => setCount(count + 1)}>Click me</button>
+      </div>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+###### Okay, now back to Hooks...
+
+![gif](https://media.giphy.com/media/1msHeYluRpqWH1Ed0L/giphy.gif)

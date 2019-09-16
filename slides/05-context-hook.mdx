@@ -1,0 +1,1268 @@
+import { Appear, Notes } from 'mdx-deck'
+import { CodeSurferLayout } from 'code-surfer'
+
+# [Context Hook](https://reactjs.org/docs/hooks-reference.html#usecontext) 🎣
+
+Use contexts in **function components** <br />
+with React.useContext
+
+---
+
+# Benefits of useContext 🤩
+
+<ul>
+  <Appear>
+    <li>Escape "wrapper hell"</li>
+    <li>Escape "wrapper hell" 😄</li>
+    <li>Escape "wrapper hell" 😂</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+###### No, but seriously...
+
+---
+
+# Benefits of useContext 🤩
+
+<ul>
+  <Appear>
+    <li>Escape context consumer "wrapper hell"</li>
+    <li>Doesn't need to use built-in context consumer</li>
+    <li>
+      Doesn't need to use functional children prop <br />
+      in consumers
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+###### Here's a "wrapper hell" example...
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+class Providers extends Component {
+  render() {
+    return <div>{this.props.children}</div>
+  }
+}
+```
+
+```jsx
+class Providers extends Component {
+  render() {
+    return (
+      <Provider>
+        <div>{this.props.children}</div>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx
+class Providers extends Component {
+  render() {
+    return (
+      <Provider>
+        <SomeProvider>
+          <div>{this.props.children}</div>
+        </SomeProvider>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx
+class Providers extends Component {
+  render() {
+    return (
+      <Provider>
+        <SomeProvider>
+          <AnotherProvider>
+            <div>{this.props.children}</div>
+          </AnotherProvider>
+        </SomeProvider>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx
+class Providers extends Component {
+  render() {
+    return (
+      <Provider>
+        <SomeProvider>
+          <AnotherProvider>
+            <YetAnotherProvider>
+              <div>{this.props.children}</div>
+            </YetAnotherProvider>
+          </AnotherProvider>
+        </SomeProvider>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 1:17
+class Providers extends Component {
+  render() {
+    return (
+      <Provider>
+        <SomeProvider>
+          <AnotherProvider>
+            <YetAnotherProvider>
+              <div>{this.props.children}</div>
+            </YetAnotherProvider>
+          </AnotherProvider>
+        </SomeProvider>
+      </Provider>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+![gif](https://media.giphy.com/media/3o85xsbtdjaOK6zJ5e/giphy.gif)
+
+---
+
+###### How about the consumers?
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <WrapperHell />
+      </div>
+    )
+  }
+}
+```
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <AppConsumer>
+        {app => (
+          <div>
+            <WrapperHell />
+          </div>
+        )}
+      </AppConsumer>
+    )
+  }
+}
+```
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <AppConsumer>
+        {app => (
+          <SomeConsumer>
+            {some => (
+              <div>
+                <WrapperHell />
+              </div>
+            )}
+          </SomeConsumer>
+        )}
+      </AppConsumer>
+    )
+  }
+}
+```
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <AppConsumer>
+        {app => (
+          <SomeConsumer>
+            {some => (
+              <AnotherConsumer>
+                {another => (
+                  <div>
+                    <WrapperHell />
+                  </div>
+                )}
+              </AnotherConsumer>
+            )}
+          </SomeConsumer>
+        )}
+      </AppConsumer>
+    )
+  }
+}
+```
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <AppConsumer>
+        {app => (
+          <SomeConsumer>
+            {some => (
+              <AnotherConsumer>
+                {another => (
+                  <YetAnotherConsumer>
+                    {yetAnother => (
+                      <div>
+                        <WrapperHell />
+                      </div>
+                    )}
+                  </YetAnotherConsumer>
+                )}
+              </AnotherConsumer>
+            )}
+          </SomeConsumer>
+        )}
+      </AppConsumer>
+    )
+  }
+}
+```
+
+```jsx 4:23
+class App extends Component {
+  render() {
+    return (
+      <AppConsumer>
+        {app => (
+          <SomeConsumer>
+            {some => (
+              <AnotherConsumer>
+                {another => (
+                  <YetAnotherConsumer>
+                    {yetAnother => (
+                      <div>
+                        <WrapperHell />
+                      </div>
+                    )}
+                  </YetAnotherConsumer>
+                )}
+              </AnotherConsumer>
+            )}
+          </SomeConsumer>
+        )}
+      </AppConsumer>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+###### Nah, let's be logical...
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <AppConsumer>
+          {app => (
+            <div>
+              <WrapperHell />
+            </div>
+          )}
+        </AppConsumer>
+
+        <SomeConsumer>
+          {some => (
+            <AnotherConsumer>
+              {another => (
+                <div>
+                  <WrapperHell />
+                </div>
+              )}
+            </AnotherConsumer>
+          )}
+        </SomeConsumer>
+      </div>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+###### ...but it's still "wrapper hell" nonetheless.
+
+![gif](https://media.giphy.com/media/1iTIu7WtSfPqMDbW/giphy.gif)
+
+---
+
+# Utilize useContext 🧐
+
+- Pass the context object created using <br />
+  [React.createContext](https://reactjs.org/docs/context.html#reactcreatecontext)
+  (not the provider or consumer)
+
+---
+
+# Example Case 🔍
+
+<ul>
+  <Appear>
+    <li>Event fetching like before, but on click</li>
+    <li>
+      Context has two values: event array and <br /> function to refresh
+    </li>
+    <li>First example will use class components</li>
+    <li>
+      Second example will use function components <br /> and context Hook
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 1[28:40],3:6 subtitle='Create context object using {createContext}'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 8:25 subtitle='Prepare provider by creating from context'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 9:12 subtitle='State values follow from context, but replace {refresh} with proper fetching logic'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 14:18 subtitle='Refresh function fetches the event and sets the state'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 22 subtitle='Provider component renders children with given value from component state'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 27:46 subtitle='Example component using created provider component'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import ContextClassComps from '../components/examples/ContextClassComps.js'
+
+<ContextClassComps />
+
+---
+
+# Things to do ✍
+
+<ul>
+  <Appear>
+    <li>Transform class components to function components</li>
+    <li>Replace class state logic with React.useState</li>
+    <li>Replace context consumer usage with React.useContext</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+###### Let's focus on the provider first...
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx subtitle='Create a new function component'
+import React, { Component, createContext } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  //
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 1[43:50],9 subtitle='Utilize {useState} to store events'
+import React, { Component, createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 18:22 subtitle="Copy the refresh function from the class component..."
+import React, { Component, createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx subtitle="...to the new function component..."
+import React, { Component, createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+
+  function refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx subtitle="...and change setter using {setEvents}"
+import React, { Component, createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+
+  function refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  }
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx subtitle="Then return the provider wrapper with the same values as before"
+import React, { Component, createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+
+  function refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  }
+
+  return <context.Provider value={{ events, refresh }} children={children} />
+}
+
+class Provider extends Component {
+  state = {
+    events: [],
+    refresh: () => this.refresh(),
+  }
+
+  refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <context.Provider value={this.state} children={this.props.children} />
+    )
+  }
+}
+```
+
+```jsx 1:18
+import React, { createContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+
+  function refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  }
+
+  return <context.Provider value={{ events, refresh }} children={children} />
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+# How to consume 🍽
+
+<ul>
+  <Appear>
+    <li>
+      Access consumer via React.useContext, not from <br />
+      built-in context consumer
+    </li>
+    <li>No need to use consumer functional children prop</li>
+    <li>Pass the context object to React.useContext</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+<!-- prettier-ignore-start -->
+```jsx subtitle='Create a new function component for the app'
+import React, { Component } from 'react'
+
+function App() {
+  return (
+    <Provider>
+      ...
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+<!-- prettier-ignore-end -->
+
+```jsx subtitle='And the app content which will be rendered in <App /> will act as the consumer'
+import React, { Component } from 'react'
+
+function Content() {
+  //
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 21:28 subtitle="And we're going to copy our render content..."
+import React, { Component } from 'react'
+
+function Content() {
+  //
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx subtitle='...into our content component'
+import React, { Component } from 'react'
+
+function Content() {
+  return (
+    <>
+      <ul>
+        {events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+      <button onClick={refresh}>Refresh</button>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 29[13:31] subtitle='Since functional children is needed to access context values...'
+import React, { Component } from 'react'
+
+function Content() {
+  return (
+    <>
+      <ul>
+        {events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+      <button onClick={refresh}>Refresh</button>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 1[28:37],4 subtitle='...we only need {useContext} to access context values'
+import React, { Component, useContext } from 'react'
+
+function Content() {
+  const { events, refresh } = useContext(context)
+
+  return (
+    <>
+      <ul>
+        {events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+      <button onClick={refresh}>Refresh</button>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <context.Consumer>
+          {({ events, refresh }) => (
+            <>
+              <ul>
+                {events.map(({ Name }) => (
+                  <li key={Name}>{Name}</li>
+                ))}
+              </ul>
+              <button onClick={refresh}>Refresh</button>
+            </>
+          )}
+        </context.Consumer>
+      </Provider>
+    )
+  }
+}
+```
+
+```jsx 1:26
+import React, { useContext } from 'react'
+
+function Content() {
+  const { events, refresh } = useContext(context)
+
+  return (
+    <>
+      <ul>
+        {events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+      <button onClick={refresh}>Refresh</button>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+```
+
+```jsx 1:41
+import React, { createContext, useContext, useState } from 'react'
+
+const context = createContext({
+  events: [],
+  refresh: () => {},
+})
+
+function Provider({ children }) {
+  const [events, setEvents] = useState([])
+
+  function refresh() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  }
+
+  return <context.Provider value={{ events, refresh }} children={children} />
+}
+
+function Content() {
+  const { events, refresh } = useContext(context)
+
+  return (
+    <>
+      <ul>
+        {events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+      <button onClick={refresh}>Refresh</button>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Provider>
+      <Content />
+    </Provider>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseContext from '../components/examples/UseContext.js'
+
+<UseContext />
+
+---
+
+###### ...and that's context hooks.
+
+![gif](https://media.giphy.com/media/TIRlx3Fzi1A7L2d5z7/giphy.gif)

@@ -1,0 +1,136 @@
+import { Appear, Embed, Notes } from 'mdx-deck'
+import { CodeSurferLayout } from 'code-surfer'
+
+# 🎣 [Hooks In A Nutshell](.)
+
+Introduction to [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+
+###### SurabayaJS x Facebook Developer Circle Surabaya <br /> Sunday, 22nd September 2019
+
+###### [twitter.com/griko_nibras](https://twitter.com/griko_nibras)
+
+---
+
+# Hello there 👋
+
+<ul>
+  <Appear>
+    <li>
+      My name is{' '}
+      <b>
+        <a href='https://griko.id'>Griko Muhammad Sultan Nibras</a>
+      </b>
+    </li>
+    <li>
+      Or just <b>Griko Nibras</b> if it's too long
+    </li>
+    <li>
+      Haven't finished my thesis at <b>ITATS</b>
+    </li>
+    <li>
+      Love working on web technologies like <b>Laravel</b> <br />
+      and <b>React</b> frameworks
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+# This deck is about... 👨‍💻
+
+- Introducing React Hooks (obviously)
+- Usage of various built-in Hooks
+- Use and create [custom Hooks](https://reactjs.org/docs/hooks-custom.html)
+- ...and a lot of snippets and live examples
+
+---
+
+# This deck isn't about... 🙅
+
+- Basic introduction to React or JavaScript itself
+- Replace class components with function + hooks
+- [Fishing hooks](https://www.google.com/search?q=fishing+hook&tbm=isch) 🎣
+
+---
+
+# Before we start... 🙇
+
+- Snippets will be full of [JSX](https://reactjs.org/docs/introducing-jsx.html)
+  and [ES6 syntaxes](https://github.com/lukehoban/es6features)
+- Pink underline texts are links, [like this one](https://youtu.be/dQw4w9WgXcQ)
+- Link resources will be shown at the end
+
+---
+
+###### Now that's out of the way, let's start 👏
+
+![gif](https://media.giphy.com/media/9DGFdfnT6SJSE/giphy.gif)
+
+---
+
+# [Introducing Hooks](https://reactjs.org/docs/hooks-intro.html) 🎣
+
+<ul>
+  <Appear>
+    <li>
+      Use state and other React features <br /> without writing any classes
+    </li>
+    <li>
+      Hooks are completely opt-in and 100% <br /> backwards-compatible
+    </li>
+    <li>
+      Does not replace your knowledge of <br /> React concepts
+    </li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<iframe
+  width='640'
+  height='320'
+  src='https://www.youtube.com/embed/dpw9EHDh2bM'
+  frameborder='0'
+  allowfullscreen
+/>
+
+###### Hooks was introduced at [React Conf 2018](http://conf2018.reactjs.org) <br /> by [Sophie Alpert](https://twitter.com/sophiebits) and [Dan Abramov](https://twitter.com/dan_abramov).
+
+---
+
+# [What Are Hooks?](https://reactjs.org/docs/hooks-overview.html#but-what-is-a-hook) 🤔
+
+<Appear>
+
+A special function that lets you "hook into" React features <br />
+(more about this later)
+
+</Appear>
+
+<Notes>{''}</Notes>
+
+---
+
+# [Why Hooks Exist](https://reactjs.org/docs/hooks-intro.html#motivation) 💫
+
+<ul>
+  <Appear>
+    <li>Hard to reuse stateful logic between components</li>
+    <li>Complex components become hard to understand</li>
+    <li>Classes confuse both people and machines</li>
+  </Appear>
+</ul>
+
+<Notes>{`
+1. "wrapper hell" like render props and HOCs
+2. componentDidMount, componentDidUpdate, componentWillUnmount
+3. 'this' keyword
+`}</Notes>
+
+---
+
+###### Speaking of classes...

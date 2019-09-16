@@ -1,0 +1,18 @@
+{
+  "name": "hooks-in-a-nutshell",
+  "description": "Introduction to React Hooks - Sunday, 22nd September 2019",
+  "version": "1.0.0",
+  "repository": "git@github.com:grikomsn/hooks-in-a-nutshell.git",
+  "author": "Griko Nibras <grikomsn@gmail.com>",
+  "scripts": {
+    "start": "mdx-deck deck.js",
+    "build": "mdx-deck build deck.js",
+    "test": "echo \"there are no tests\""
+  },
+  "devDependencies": {
+    "code-surfer": "^2.0.0-alpha.10",
+    "mdx-deck": "^2.5.1",
+    "mdx-deck-code-surfer": "^0.5.5"
+  },
+  "private": true
+}

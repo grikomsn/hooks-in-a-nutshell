@@ -1,0 +1,1130 @@
+import { Appear, Notes } from 'mdx-deck'
+import { CodeSurferLayout } from 'code-surfer'
+
+# [Effect Hook](https://reactjs.org/docs/hooks-effect.html) 🎣
+
+Perform side effects in **function components** <br />
+with React.useEffect
+
+---
+
+# Definition of an Effect 👨‍🏫
+
+- Data fetching
+- Subscriptions
+- Manual DOM manipulation
+
+###### These are called 'side effects' because they can affect <br /> other components and can’t be done during rendering
+
+---
+
+# What Effect Hook Does 🧜
+
+- componentDidMount
+- componentDidUpdate
+- componentWillUnmount
+
+###### All three class component lifecycle methods in one API
+
+---
+
+###### Probably confusing. Let's use an example...
+
+![gif](https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif)
+
+---
+
+# Side Effect Use Case 👮
+
+- Update window or document object
+- Fetch data from other sources
+- Manage reducer subscriptions
+
+###### We're going to demo fetching data from an external API
+
+---
+
+###### But first, back to class components again...
+
+![gif](https://media.giphy.com/media/ieK61z4Bni6DKGrWTy/giphy.gif)
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+```jsx 4 subtitle='Initialize the events state with empty array'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+```jsx 14:18 subtitle='Render the events with Array.prototype.map'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+```jsx 6:10 subtitle='After mounted, fetch events then set state from result'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+```jsx 14:18 subtitle='You can add a fallback component by checking if events state is empty...'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+```
+
+```jsx subtitle='...by using a ternary operator like this'
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 1:23
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import ComponentDidMount from '../components/examples/ComponentDidMount.js'
+
+<ComponentDidMount />
+
+---
+
+###### Stop, ~~hammer~~ useEffect time...
+
+![gif](https://media.giphy.com/media/kgKrO1A3JbWTK/giphy.gif)
+
+---
+
+# Things to do ✏️
+
+<ul>
+  <Appear>
+    <li>Transform our class component to function component</li>
+    <li>Change componentDidMount logic using React.useEffect</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { Component } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 1[28:36] subtitle='Import {useEffect} from React'
+import React, { Component, useEffect } from 'react'
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='Create a new function component'
+import React, { Component, useEffect } from 'react'
+
+function Example() {
+  //
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 17:25 subtitle="And we're going to copy our render content..."
+import React, { Component, useEffect } from 'react'
+
+function Example() {
+  //
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='...into our function component'
+import React, { Component, useEffect } from 'react'
+
+function Example() {
+  return this.state.events.length > 0 ? (
+    <ul>
+      {this.state.events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 1[39:46] subtitle='Since we need states, import {useState} from React'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  return this.state.events.length > 0 ? (
+    <ul>
+      {this.state.events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='Create an empty array state for the events'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  return this.state.events.length > 0 ? (
+    <ul>
+      {this.state.events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle="Don't forget replace {this.state.events} with {events}"
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='Add the {useEffect} Hook'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    //
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 25:27 subtitle='Copy the componentDidMount logic from here...'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    //
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='...to inside the effect Hook...'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='...and replace state setter with {setEvents}'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => setEvents(events))
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx subtitle='Or just use {setEvents} as the callback'
+import React, { Component, useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+
+class Example extends Component {
+  state = { events: [] }
+
+  componentDidMount() {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(events => this.setState({ events }))
+  }
+
+  render() {
+    return this.state.events.length > 0 ? (
+      <ul>
+        {this.state.events.map(({ Name }) => (
+          <li key={Name}>{Name}</li>
+        ))}
+      </ul>
+    ) : (
+      <span>Loading...</span>
+    )
+  }
+}
+```
+
+```jsx 1:21
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseEffect from '../components/examples/UseEffect.js'
+
+<UseEffect />
+
+---
+
+###### But wait, we have a memory leak...
+
+![gif](https://media.giphy.com/media/etBlg1EQTz6pCzdKmd/giphy.gif)
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+```jsx subtitle="Let's log something on {useEffect} and see"
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+
+    console.log('fired at ' + new Date().toLocaleTimeString())
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseEffectLog from '../components/examples/UseEffectLog.js'
+
+<UseEffectLog />
+
+---
+
+# [Optimizing Performance](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) 🏃
+
+<ul>
+  <Appear>
+    <li>Effect Hook runs on every state change</li>
+    <li>
+      Skip applying effects by passing what values should <br />
+      be monitored (second parameter on useEffect)
+    </li>
+    <li>Or pass nothing to run effects only once</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+
+    console.log('fired at ' + new Date().toLocaleTimeString())
+  })
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+```jsx 12[6:7] subtitle='pass an array containing what states or values should be monitored (none to run effect only once)'
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+
+    console.log('fired at ' + new Date().toLocaleTimeString())
+  }, [])
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+```jsx 6:12 subtitle='Now this effect will run only once (on mount)'
+import React, { useEffect, useState } from 'react'
+
+function Example() {
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    fetch('https://events.surabayajs.org')
+      .then(res => res.json())
+      .then(setEvents)
+
+    console.log('fired at ' + new Date().toLocaleTimeString())
+  }, [])
+
+  return events.length > 0 ? (
+    <ul>
+      {events.map(({ Name }) => (
+        <li key={Name}>{Name}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Loading...</span>
+  )
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+import UseEffectOnce from '../components/examples/UseEffectOnce.js'
+
+<UseEffectOnce />
+
+---
+
+# How about effect on unmount? 🧹
+
+---
+
+# Example Case 🕵
+
+<ul>
+  <Appear>
+    <li>Online state subscription (think of Redux and such)</li>
+    <li>
+      Using class components, we use componentDidMount <br />
+      and componentWillUnmount
+    </li>
+    <li>Subscribe on mount, unsubscribe on unmount</li>
+    <li>Using effect Hook, return a function to cleanup things</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline)
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  }, [props.friend.id])
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx 10:16 subtitle='This effect handles the online state subscription'
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline)
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  }, [props.friend.id])
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx 13:15 subtitle='Returned function will be fired on unmount (cleanup)'
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline)
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  }, [props.friend.id])
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx 16[6:22] subtitle='Effect will run only when this friend ID changes'
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline)
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  }, [props.friend.id])
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+```jsx 1:22
+import React, { useState, useEffect } from 'react'
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null)
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline)
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange)
+
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange)
+    }
+  }, [props.friend.id])
+
+  if (isOnline === null) {
+    return 'Loading...'
+  }
+  return isOnline ? 'Online' : 'Offline'
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+# Recap on Effect Hook 🧚
+
+<ul>
+  <Appear>
+    <li>useEffect runs on mount and monitored values</li>
+    <li>Pass array of states to monitor when to update</li>
+    <li>Return a function to cleanup (unmount)</li>
+  </Appear>
+</ul>
+
+<Notes>{''}</Notes>
+
+---
+
+###### ...and that's how effect hooks work.
+
+![gif](https://media.giphy.com/media/l0MYEqEzwMWFCg8rm/giphy.gif)

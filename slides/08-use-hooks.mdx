@@ -1,0 +1,178 @@
+import { CodeSurferLayout } from 'code-surfer'
+
+# [usehooks.com](https://usehooks.com/) 🐠
+
+Easy to understand React Hook recipes <br />
+by [Gabe Ragland](https://twitter.com/gabe_ragland)
+
+---
+
+# [useHover](https://usehooks.com/useHover/) 🚀
+
+Detect whether the mouse is hovering an element
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import { useRef, useState, useEffect } from 'react'
+
+function useHover() {
+  const [value, setValue] = useState(false)
+
+  const ref = useRef(null)
+
+  const handleMouseOver = () => setValue(true)
+  const handleMouseOut = () => setValue(false)
+
+  useEffect(() => {
+    const node = ref.current
+
+    if (node) {
+      node.addEventListener('mouseover', handleMouseOver)
+      node.addEventListener('mouseout', handleMouseOut)
+
+      return () => {
+        node.removeEventListener('mouseover', handleMouseOver)
+        node.removeEventListener('mouseout', handleMouseOut)
+      }
+    }
+  }, [ref.current])
+
+  return [ref, value]
+}
+```
+
+```jsx
+import { useRef, useState, useEffect } from 'react'
+
+function useHover() {
+  const [value, setValue] = useState(false)
+
+  const ref = useRef(null)
+
+  const handleMouseOver = () => setValue(true)
+  const handleMouseOut = () => setValue(false)
+
+  useEffect(() => {
+    const node = ref.current
+
+    if (node) {
+      node.addEventListener('mouseover', handleMouseOver)
+      node.addEventListener('mouseout', handleMouseOut)
+
+      return () => {
+        node.removeEventListener('mouseover', handleMouseOver)
+        node.removeEventListener('mouseout', handleMouseOut)
+      }
+    }
+  }, [ref.current])
+
+  return [ref, value]
+}
+
+function App() {
+  const [hoverRef, isHovered] = useHover()
+
+  return <div ref={hoverRef}>{isHovered ? '✅' : '❎'}</div>
+}
+```
+
+</CodeSurferLayout>
+
+---
+
+# [useKeyPress](https://usehooks.com/useKeyPress/) 🚀
+
+Detect when the user is pressing a specific <br />
+key on their keyboard
+
+---
+
+<CodeSurferLayout>
+
+```jsx
+import { useState, useEffect } from 'react'
+
+function useKeyPress(targetKey) {
+  const [keyPressed, setKeyPressed] = useState(false)
+
+  function downHandler({ key }) {
+    if (key === targetKey) {
+      setKeyPressed(true)
+    }
+  }
+
+  const upHandler = ({ key }) => {
+    if (key === targetKey) {
+      setKeyPressed(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', downHandler)
+    window.addEventListener('keyup', upHandler)
+
+    return () => {
+      window.removeEventListener('keydown', downHandler)
+      window.removeEventListener('keyup', upHandler)
+    }
+  }, [])
+
+  return keyPressed
+}
+```
+
+```jsx
+import { useState, useEffect } from 'react'
+
+function useKeyPress(targetKey) {
+  const [keyPressed, setKeyPressed] = useState(false)
+
+  function downHandler({ key }) {
+    if (key === targetKey) {
+      setKeyPressed(true)
+    }
+  }
+
+  const upHandler = ({ key }) => {
+    if (key === targetKey) {
+      setKeyPressed(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', downHandler)
+    window.addEventListener('keyup', upHandler)
+
+    return () => {
+      window.removeEventListener('keydown', downHandler)
+      window.removeEventListener('keyup', upHandler)
+    }
+  }, [])
+
+  return keyPressed
+}
+
+function App() {
+  const happyPress = useKeyPress('h')
+  const sadPress = useKeyPress('s')
+  const robotPress = useKeyPress('r')
+  const foxPress = useKeyPress('f')
+
+  return (
+    <div>
+      <div>h, s, r, f</div>
+      <div>
+        {happyPress && '😊'}
+        {sadPress && '😢'}
+        {robotPress && '🤖'}
+        {foxPress && '🦊'}
+      </div>
+    </div>
+  )
+}
+```
+
+</CodeSurferLayout>
