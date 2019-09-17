@@ -7,6 +7,18 @@
       "src": "package.json",
       "use": "@now/static-build",
       "config": { "distDir": "dist" }
+    },
+    {
+      "src": "storybook/package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "storybook-static" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/storybook",
+      "status": 301,
+      "headers": { "Location": "/storybook/" }
     }
   ],
   "github": {
