@@ -1,6 +1,8 @@
 import { Appear, Notes } from 'mdx-deck'
 import { CodeSurferLayout } from 'code-surfer'
 
+import StorybookLink from '../components/StorybookLink'
+
 # [Effect Hook](https://reactjs.org/docs/hooks-effect.html) 🎣
 
 Perform side effects in **function components** <br />
@@ -231,6 +233,10 @@ class Example extends Component {
 import ComponentDidMount from '../components/examples/ComponentDidMount'
 
 <ComponentDidMount />
+
+⋯
+
+<StorybookLink path='effect-hook--componentdidmount' />
 
 ---
 
@@ -781,6 +787,10 @@ import UseEffect from '../components/examples/UseEffect'
 
 <UseEffect />
 
+⋯
+
+<StorybookLink path='effect-hook--useeffect' />
+
 ---
 
 ###### But wait, we have a memory leak...
@@ -848,6 +858,10 @@ function Example() {
 import UseEffectLog from '../components/examples/UseEffectLog'
 
 <UseEffectLog />
+
+⋯
+
+<StorybookLink path='effect-hook--useeffect-log' />
 
 ---
 
@@ -955,6 +969,10 @@ function Example() {
 import UseEffectOnce from '../components/examples/UseEffectOnce'
 
 <UseEffectOnce />
+
+⋯
+
+<StorybookLink path='effect-hook--useeffect-log-once' />
 
 ---
 
