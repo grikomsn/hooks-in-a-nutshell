@@ -16,6 +16,10 @@
   ],
   "routes": [
     {
+      "src": "/[0-9]+$",
+      "dest": "/"
+    },
+    {
       "src": "/storybook",
       "status": 301,
       "headers": { "Location": "/storybook/" }
