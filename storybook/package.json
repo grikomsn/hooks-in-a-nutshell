@@ -6,8 +6,7 @@
   "author": "Griko Nibras <grikomsn@gmail.com>",
   "scripts": {
     "start": "start-storybook",
-    "build": "build-storybook",
-    "now-build": "yarn build"
+    "build": "build-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

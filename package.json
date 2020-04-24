@@ -6,8 +6,7 @@
   "author": "Griko Nibras <grikomsn@gmail.com>",
   "scripts": {
     "start": "mdx-deck deck.js",
-    "build": "mdx-deck build deck.js",
-    "now-build": "yarn build"
+    "build": "mdx-deck build deck.js"
   },
   "devDependencies": {
     "code-surfer": "^2.0.0-alpha.10",

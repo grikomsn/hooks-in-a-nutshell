@@ -1,7 +1,4 @@
 {
-  "name": "hooks-in-a-nutshell",
-  "version": 2,
-  "alias": ["hooks-in-a-nutshell"],
   "builds": [
     {
       "src": "package.json",
@@ -29,6 +26,5 @@
     "autoAlias": true,
     "enabled": true
   },
-  "public": true,
-  "regions": ["all"]
+  "public": true
 }
